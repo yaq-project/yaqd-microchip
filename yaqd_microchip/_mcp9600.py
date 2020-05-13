@@ -1,62 +1,51 @@
+#! /usr/bin/env python3
+
+
 __all__ = ["MCP9600"]
 
+
 import asyncio
-from typing import Dict, Any, List
-
-from yaqd_core import Sensor, logging
-
-logger = logging.getLogger(__name__)
-logger.setLevel(logging.INFO)
+import smbus  # type: ignore
+from yaqd_core import Sensor
 
 
 class MCP9600(Sensor):
-    _kind = "mcp9600"
-    traits: List[str] = []
-    defaults: Dict[str, Any] = {}
+    traits = ["uses-i2c", "uses-serial"]
+    _kind = "MCP9600"
 
     def __init__(self, name, config, config_filepath):
         super().__init__(name, config, config_filepath)
-        # Perform any unique initialization
-
-        self.channel_names = ["channel"]
-        self.channel_units = {"channel": "units"}
-
-
-    def _load_state(self, state):
-        """Load an initial state from a dictionary (typically read from the state.toml file).
-
-        Must be tolerant of missing fields, including entirely empty initial states.
-
-        Parameters
-        ----------
-        state: dict
-            The saved state to load.
-        """
-        super()._load_state(state)
-        # This is an example to show the symetry between load and get
-        # If no persistent state is needed, these unctions can be deleted
-        self.value = state.get("value", 0)
-
-    def get_state(self):
-        state = super().get_state()
-        state["value"] = self.value
-        return state
-
-
+        self.address = config["address"]
+        self.bus = smbus.SMBus(1)
+        # in the future, some of these settings could be exposed
+        # for now, keeping this daemon minimal
+        # ---Blaise 2019-10-20
+        self.bus.write_byte_data(self.address, 0xC0, 0x00)  # WRITE command
+        self.bus.write_byte_data(self.address, 0x05, 0x01)  # type K, filter n=1
+        self.bus.write_byte_data(self.address, 0x06, 0x00)  # highest resolution
+        self.channels = {"temperature": ("deg_C", ())}
 
     async def _measure(self):
-        return {"channel": 0}
-
-
-
-    async def update_state(self):
-        """Continually monitor and update the current daemon state."""
-        # If there is no state to monitor continuously, delete this function
+        out = {}
+        # for reasons I don't understand, sometimes this sensor returns bad data
+        # this is always in the form of bytes 0000001 0000001
+        # in this special case, I try again
         while True:
-            # Perform any updates to internal state
-            self._busy = False
-            # There must be at least one `await` in this loop
-            # This one waits for something to trigger the "busy" state
-            # (Setting `self._busy = True)
-            # Otherwise, you can simply `await asyncio.sleep(0.01)`
-            await self._busy_sig.wait()
+            # clear status register
+            self.bus.write_byte_data(self.address, 0x04, 0x00)
+            # wait until hot junction temperature has been updated
+            while True:
+                status = self.bus.read_i2c_block_data(self.address, 0x04, 1)[0]
+                if status > 64:
+                    break
+                await asyncio.sleep(0)
+            await asyncio.sleep(0.1)
+            # read off hot junction temperature
+            data = self.bus.read_i2c_block_data(self.address, 0x00, 2)
+            if data[0] != data[1]:
+                break
+        temperature = ((data[0] & 0x7F) * 16) + (float(data[1]) / 16)
+        if data[0] & 0x80:
+            temperature = 1024 - temperature
+        out["temperature"] = temperature
+        return out

@@ -8,10 +8,13 @@ import asyncio
 import smbus  # type: ignore
 from yaqd_core import Sensor
 
+from .__version__ import __branch__
+
 
 class MCP9600(Sensor):
     traits = ["uses-i2c", "uses-serial"]
     _kind = "MCP9600"
+    _version = "1.0.0" + f"+{__branch__}" if __branch__ else ""
 
     def __init__(self, name, config, config_filepath):
         super().__init__(name, config, config_filepath)

@@ -8,6 +8,8 @@ import asyncio
 import smbus  # type: ignore
 from yaqd_core import Sensor
 
+from .__version__ import __branch__
+
 
 # least significant bit (V)
 lsb = {12: 1e-3, 14: 2.5e-4, 16: 6.25e-5}
@@ -15,6 +17,7 @@ lsb = {12: 1e-3, 14: 2.5e-4, 16: 6.25e-5}
 
 class MCP3428(Sensor):
     _kind = "MCP3428"
+    _version = "1.0.0" + f"+{__branch__}" if __branch__ else ""
     traits = ["uses-i2c", "uses-serial"]
 
     def __init__(self, name, config, config_filepath):

@@ -18,6 +18,7 @@ before_script:
   - pip install -U mypy
   - pip install -U yaqc
   - pip install -U yaqd-core
+  - pip install -U smbus
   - pip install -e .
 
 # test stage

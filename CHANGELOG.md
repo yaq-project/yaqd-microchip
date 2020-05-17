@@ -5,7 +5,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/).
 
 ## [Unreleased]
 
-[2020.05.0]
+## [2020.05.0]
 
 ### Added
 - added daemon-level version, see [YEP-105](https://yeps.yaq.fyi/105/)

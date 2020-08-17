@@ -5,10 +5,8 @@ __all__ = ["MCP3428"]
 
 
 import asyncio
-import smbus  # type: ignore
+import smbus2 as smbus  # type: ignore
 from yaqd_core import Sensor
-
-from .__version__ import __branch__
 
 
 # least significant bit (V)
@@ -16,21 +14,15 @@ lsb = {12: 1e-3, 14: 2.5e-4, 16: 6.25e-5}
 
 
 class MCP3428(Sensor):
-    _kind = "MCP3428"
-    _version = "1.0.0" + f"+{__branch__}" if __branch__ else ""
-    traits = ["uses-i2c", "uses-serial"]
+    _kind = "mcp3428"
 
     def __init__(self, name, config, config_filepath):
         super().__init__(name, config, config_filepath)
-        self.address = config["address"]
-        self.bus = smbus.SMBus(1)
-        self.bus.write_byte_data(self.address, 0xC0, 0x00)
-        self.channels = {
-            "channel_0": ("V", ()),
-            "channel_1": ("V", ()),
-            "channel_2": ("V", ()),
-            "channel_3": ("V", ()),
-        }
+        self._address = config["i2c_addr"]
+        self._bus = smbus.SMBus(1)
+        self._bus.write_byte_data(self._address, 0xC0, 0x00)
+        self._channel_names = ["channel_0", "channel_1", "channel_2", "channel_3"]
+        self._channel_units = {name: "V" for name in self._channel_names}
         self._set_mode("one-shot")
         self._channel_register = 0
         # the following defaults will be overwritten
@@ -40,16 +32,6 @@ class MCP3428(Sensor):
         self._size_register = 0
         self._gain_register = 0
 
-    def get_state(self):
-        state = super().get_state()
-        state["gain"] = self._gain
-        state["size"] = self._size
-        return state
-
-    def _load_state(self, state):
-        self._set_gain(state.get("gain", 1))
-        self._set_size(state.get("size", 12))
-
     async def _measure(self):
         out = {}
         for channel in range(4):
@@ -58,7 +40,7 @@ class MCP3428(Sensor):
             await asyncio.sleep(0.1)
             # data arrives as (most significant byte, least significant byte)
             # MSB is sign
-            data = self.bus.read_i2c_block_data(self.address, 0x00, 3)
+            data = self._bus.read_i2c_block_data(self._address, 0x00, 3)
             value = (data[0] << 8) | data[1]
             if value >= (1 << self._size):
                 value = (1 << self._size) - value
@@ -95,4 +77,4 @@ class MCP3428(Sensor):
         out |= self._mode_register << 4
         out |= self._size_register << 2
         out |= self._gain_register
-        self.bus.write_byte(self.address, out)
+        self._bus.write_byte(self._address, out)

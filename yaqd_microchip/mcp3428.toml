@@ -1,0 +1,11 @@
+protocol = "mcp3428"
+doc = """
+Daemon to interface with MCP3428 four-channel ADC.
+"""
+traits = ["uses-i2c", "has-measure-trigger", "is-sensor", "is-daemon"]
+hardware = ["microchip:mcp3428"]
+
+[links]
+source = "https://gitlab.com/yaq/yaqd-microchip/"
+bugtracker = "https://gitlab.com/yaq/yaqd-microchip/-/issues/"
+manufacturer = "https://www.microchip.com/wwwproducts/en/MCP3428"

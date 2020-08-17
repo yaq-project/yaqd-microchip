@@ -1,0 +1,11 @@
+protocol = "mcp9600"
+doc = """
+Daemon to interface with MCP9600 thermocouple ADC.
+"""
+traits = ["uses-i2c", "has-measure-trigger", "is-sensor", "is-daemon"]
+hardware = ["microchip:mcp9600"]
+
+[links]
+source = "https://gitlab.com/yaq/yaqd-microchip/"
+bugtracker = "https://gitlab.com/yaq/yaqd-microchip/-/issues/"
+manufacturer = "https://www.microchip.com/wwwproducts/en/MCP9600"

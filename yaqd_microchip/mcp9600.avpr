@@ -46,6 +46,10 @@
     "hardware": [
         "microchip:mcp9600"
     ],
+    "installation": {
+        "PyPI": "https://pypi.org/project/yaqd-microchip",
+        "conda-forge": "https://anaconda.org/conda-forge/yaqd-microchip"
+    },
     "links": {
         "bugtracker": "https://gitlab.com/yaq/yaqd-microchip/-/issues/",
         "manufacturer": "https://www.microchip.com/wwwproducts/en/MCP9600",
@@ -178,10 +182,10 @@
     "protocol": "mcp9600",
     "requires": [],
     "traits": [
-        "has-measure-trigger",
-        "uses-i2c",
-        "uses-serial",
         "is-daemon",
+        "has-measure-trigger",
+        "uses-serial",
+        "uses-i2c",
         "is-sensor"
     ],
     "types": [

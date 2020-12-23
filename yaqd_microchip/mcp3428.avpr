@@ -46,6 +46,10 @@
     "hardware": [
         "microchip:mcp3428"
     ],
+    "installation": {
+        "PyPI": "https://pypi.org/project/yaqd-microchip",
+        "conda-forge": "https://anaconda.org/conda-forge/yaqd-microchip"
+    },
     "links": {
         "bugtracker": "https://gitlab.com/yaq/yaqd-microchip/-/issues/",
         "manufacturer": "https://www.microchip.com/wwwproducts/en/MCP3428",
@@ -178,11 +182,11 @@
     "protocol": "mcp3428",
     "requires": [],
     "traits": [
+        "uses-serial",
         "has-measure-trigger",
         "uses-i2c",
-        "is-daemon",
-        "uses-serial",
-        "is-sensor"
+        "is-sensor",
+        "is-daemon"
     ],
     "types": [
         {

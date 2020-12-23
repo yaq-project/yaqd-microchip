@@ -9,3 +9,8 @@ hardware = ["microchip:mcp9600"]
 source = "https://gitlab.com/yaq/yaqd-microchip/"
 bugtracker = "https://gitlab.com/yaq/yaqd-microchip/-/issues/"
 manufacturer = "https://www.microchip.com/wwwproducts/en/MCP9600"
+
+[installation]
+PyPI = "https://pypi.org/project/yaqd-microchip"
+conda-forge = "https://anaconda.org/conda-forge/yaqd-microchip"
+

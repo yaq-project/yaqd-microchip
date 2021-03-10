@@ -215,8 +215,8 @@
     "traits": [
         "has-measure-trigger",
         "is-daemon",
-        "uses-i2c",
         "is-sensor",
+        "uses-i2c",
         "uses-serial"
     ],
     "types": [

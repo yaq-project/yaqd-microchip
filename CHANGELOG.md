@@ -36,8 +36,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/).
 - initial release
 
 [Unreleased]: https://gitlab.com/yaq/yaqd-microchip/-/compare/v2021.3.0...master
-[2021.3.0]: https://gitlab.com/yaq/yaqd-microchip/-/compare/v2020.12.0...2021.3.0
-[2020.12.0]: https://gitlab.com/yaq/yaqd-microchip/-/compare/v2020.08.0...2020.12.0
-[2020.08.0]: https://gitlab.com/yaq/yaqd-microchip/-/compare/v2020.05.0...2020.08.0
+[2021.3.0]: https://gitlab.com/yaq/yaqd-microchip/-/compare/v2020.12.0...v2021.3.0
+[2020.12.0]: https://gitlab.com/yaq/yaqd-microchip/-/compare/v2020.08.0...v2020.12.0
+[2020.08.0]: https://gitlab.com/yaq/yaqd-microchip/-/compare/v2020.05.0...v2020.08.0
 [2020.05.0]: https://gitlab.com/yaq/yaqd-microchip/-/compare/v0.1.0...v2020.05.0
 [0.1.0]: https://gitlab.com/yaq/yaqd-microchip/-/tags/v0.1.0

@@ -78,3 +78,7 @@ class MCP3428(UsesI2C, HasMeasureTrigger, IsSensor, IsDaemon):
         out |= self._size_register << 2
         out |= self._gain_register
         self._bus.write_byte(self._address, out)
+
+    def direct_serial_write(self, message: bytes):
+        for byte in message:
+            self._bus.write_byte(self._address, byte)

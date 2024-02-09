@@ -6,14 +6,14 @@ __all__ = ["MCP3428"]
 
 import asyncio
 import smbus2 as smbus  # type: ignore
-from yaqd_core import Sensor
+from yaqd_core import UsesI2C, HasMeasureTrigger, IsSensor, IsDaemon
 
 
 # least significant bit (V)
 lsb = {12: 1e-3, 14: 2.5e-4, 16: 6.25e-5}
 
 
-class MCP3428(Sensor):
+class MCP3428(UsesI2C, HasMeasureTrigger, IsSensor, IsDaemon):
     _kind = "mcp3428"
 
     def __init__(self, name, config, config_filepath):

@@ -6,10 +6,10 @@ __all__ = ["MCP9600"]
 
 import asyncio
 import smbus2 as smbus  # type: ignore
-from yaqd_core import Sensor
+from yaqd_core import UsesI2C, HasMeasureTrigger, IsSensor, IsDaemon
 
 
-class MCP9600(Sensor):
+class MCP9600(UsesI2C, HasMeasureTrigger, IsSensor, IsDaemon):
     _kind = "mcp9600"
 
     def __init__(self, name, config, config_filepath):

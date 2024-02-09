@@ -25,6 +25,10 @@ class MCP9600(UsesI2C, HasMeasureTrigger, IsSensor, IsDaemon):
         self._channel_names = ["temperature"]
         self._channel_units = {"temperature": "deg_C"}
 
+    def direct_serial_write(self, message: bytes):
+        for byte in message:
+            self._bus.write_byte(self._address, byte)
+
     async def _measure(self):
         out = {}
         # for reasons I don't understand, sometimes this sensor returns bad data

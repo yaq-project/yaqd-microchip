@@ -5,6 +5,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/).
 
 ## [Unreleased]
 
+### Fixed
+- inheritance structure broken for modern yaq
+- need to implement direct_serial_write for modern yaq
+
 ## [2021.3.0]
 
 ### Fixed

@@ -8,7 +8,6 @@ import asyncio
 import smbus2 as smbus  # type: ignore
 from yaqd_core import UsesI2C, HasMeasureTrigger, IsSensor, IsDaemon
 
-
 # least significant bit (V)
 lsb = {12: 1e-3, 14: 2.5e-4, 16: 6.25e-5}
 
